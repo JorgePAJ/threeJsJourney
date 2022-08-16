@@ -1,3 +1,6 @@
+import "../public/css/styles.css";
+import * as THREE from "three";
+
 //Scene
 const scene = new THREE.Scene();
 
@@ -19,7 +22,7 @@ const sizes = {
 const camera = new THREE.PerspectiveCamera(75, sizes.widht / sizes.height);
 scene.add(camera);
 
-// Mover la camara 
+// Mover la camara
 camera.position.z = 3;
 
 // Canvas con querySelector
