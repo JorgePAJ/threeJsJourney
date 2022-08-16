@@ -4,10 +4,18 @@ import * as THREE from "three";
 //Scene
 const scene = new THREE.Scene();
 
-// Cubo rojo
+// Cubo rosa hermoso uwu<3
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: "#e3bfd4" });
 const mesh = new THREE.Mesh(geometry, material);
+
+// Posicion del cubo
+mesh.position.x = 0.7;
+mesh.position.y = -0.6;
+mesh.position.z = 1;
+
+// Otra manera de hacer set a las posiciones (X, Y, Z)
+// mesh.position.set(0.7, -0.6, 1);
 
 // Agregar cubo al scene
 scene.add(mesh);
@@ -20,10 +28,10 @@ const sizes = {
 
 // Camara
 const camera = new THREE.PerspectiveCamera(75, sizes.widht / sizes.height);
-scene.add(camera);
-
 // Mover la camara
 camera.position.z = 3;
+// Agregar camara al scene
+scene.add(camera);
 
 // Canvas con querySelector
 const canvas = document.querySelector("canvas.webgl");
@@ -36,3 +44,5 @@ renderer.setSize(sizes.widht, sizes.height);
 
 // Render
 renderer.render(scene, camera);
+
+console.log(mesh.position.normalize());
