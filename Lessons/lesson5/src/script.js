@@ -1,24 +1,40 @@
 import "../public/css/styles.css";
 import * as THREE from "three";
 
-//Scene
+// Scene
 const scene = new THREE.Scene();
 
-// Cubo rosa hermoso uwu<3
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: "#e3bfd4" });
-const mesh = new THREE.Mesh(geometry, material);
+// Grupo de objetos
+const group = new THREE.Group();
+scene.add(group);
 
-// Posicion del cubo
-mesh.position.x = 0.7;
-mesh.position.y = -0.6;
-mesh.position.z = 1;
+const cuboRosa = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: "#e3bfd4" })
+);
+const cuboCyan = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: "cyan" })
+);
+const cuboPurple = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  new THREE.MeshBasicMaterial({ color: "purple" })
+);
 
-// Otra manera de hacer set a las posiciones (X, Y, Z)
-// mesh.position.set(0.7, -0.6, 1);
+group.add(cuboRosa);
+group.add(cuboCyan);
+group.add(cuboPurple);
 
-// Agregar cubo al scene
-scene.add(mesh);
+cuboPurple.position.x = 1;
+cuboRosa.position.x = -1;
+
+group.position.y = 2;
+group.scale.y = 0.5;
+group.rotation.y = 0.2;
+
+// Axes helper
+const axesHelper = new THREE.AxesHelper();
+scene.add(axesHelper);
 
 // Tamaños para la camara
 const sizes = {
@@ -30,8 +46,11 @@ const sizes = {
 const camera = new THREE.PerspectiveCamera(75, sizes.widht / sizes.height);
 // Mover la camara
 camera.position.z = 3;
+camera.position.y = 1;
 // Agregar camara al scene
 scene.add(camera);
+
+// camera.lookAt(mesh.position)
 
 // Canvas con querySelector
 const canvas = document.querySelector("canvas.webgl");
