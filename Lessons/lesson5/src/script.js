@@ -64,4 +64,4 @@ renderer.setSize(sizes.widht, sizes.height);
 // Render
 renderer.render(scene, camera);
 
-console.log(mesh.position.normalize());
+console.log(group.position.normalize());
