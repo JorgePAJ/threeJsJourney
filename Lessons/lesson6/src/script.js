@@ -7,6 +7,7 @@ const canvas = document.querySelector("canvas.webgl");
 // Scene
 const scene = new THREE.Scene();
 
+
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: "#e3bfd4" });
@@ -44,7 +45,7 @@ const tick = () => {
   mesh.position.y = Math.sin(elapsedTime);
   mesh.position.x = Math.cos(elapsedTime);
   camera.lookAt(mesh.position);
-  
+
   // Render
   renderer.render(scene, camera);
 
