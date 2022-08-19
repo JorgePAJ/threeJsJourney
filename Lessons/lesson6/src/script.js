@@ -1,12 +1,12 @@
 import "./style.css";
 import * as THREE from "three";
+import gsap from "gsap";
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
-
 
 // Object
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -32,23 +32,23 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height);
 renderer.render(scene, camera);
 
-// Clock
-const clock = new THREE.Clock();
+// // Clock
+// const clock = new THREE.Clock();
 
-// Animations
+gsap.to(mesh.position, { duration: 1, delay: 1, x: 2 });
+gsap.to(mesh.position, { duration: 1, delay: 2, x: 0 });
+
+// // Animations
 const tick = () => {
-  // Clock
-  const elapsedTime = clock.getElapsedTime();
-
-  // Update object
-//   mesh.rotation.y = elapsedTime * Math.PI * 2;
-  mesh.position.y = Math.sin(elapsedTime);
-  mesh.position.x = Math.cos(elapsedTime);
-  camera.lookAt(mesh.position);
-
-  // Render
+  //   // Clock
+  //   const elapsedTime = clock.getElapsedTime();
+  //   // Update object
+  // //   mesh.rotation.y = elapsedTime * Math.PI * 2;
+  //   mesh.position.y = Math.sin(elapsedTime);
+  //   mesh.position.x = Math.cos(elapsedTime);
+  //   camera.lookAt(mesh.position);
+  //   // Render
   renderer.render(scene, camera);
-
   window.requestAnimationFrame(tick);
 };
 
