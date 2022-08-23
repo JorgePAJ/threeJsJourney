@@ -1,0 +1,24 @@
+/* Fullscreen w/o scrollbar */
+.webgl{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+/* Prevent scroll by MacOs trackpad */
+html,
+body {
+    overflow: hidden;
+}
+
+/* other options to hide the scrollbar {not so good} *
+{
+    margin: 0;
+    padding: 0;
+} */
+
+/* body
+{
+ background: black;
+} */
