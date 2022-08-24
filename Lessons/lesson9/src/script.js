@@ -14,7 +14,7 @@ const scene = new THREE.Scene();
 // Object
 // const geometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
 const geometry = new THREE.BufferGeometry();
-const count = 5000;
+const count = 50;
 // count * 3 * 3 pq son 3 vertices de cada vertice de cada triangulo y cada vertice tiene 3 valores
 const positionsArray = new Float32Array(count * 3 * 3);
 
