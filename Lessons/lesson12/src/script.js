@@ -5,6 +5,8 @@ import * as lil from "lil-gui";
 
 // Textures
 const textureLoader = new THREE.TextureLoader();
+const cubeTextureLoader = new THREE.CubeTextureLoader();
+
 const doorColorTexture = textureLoader.load("/textures/door/color.jpg");
 const doorAlphaTexture = textureLoader.load("/textures/door/alpha.jpg");
 const doorAmbientOcclusionTexture = textureLoader.load(
@@ -19,6 +21,16 @@ const gradientTexture = textureLoader.load("/textures/gradients/5.jpg");
 gradientTexture.minFilter = THREE.NearestFilter;
 gradientTexture.magFilter = THREE.NearestFilter;
 gradientTexture.generateMipmaps = false;
+
+const environmentMapTexture = cubeTextureLoader.load([
+  "/textures/environmentMaps/2/px.jpg",
+  "/textures/environmentMaps/2/nx.jpg",
+  "/textures/environmentMaps/2/py.jpg",
+  "/textures/environmentMaps/2/ny.jpg",
+  "/textures/environmentMaps/2/pz.jpg",
+  "/textures/environmentMaps/2/nz.jpg",
+]);
+
 /**
  * Base
  */
@@ -53,7 +65,7 @@ const gui = new lil.GUI();
 // material.wireframe = true
 // material.flatShading = true
 
-// const material = new THREE.MeshMatcapMaterial()
+// const matericeal = new THREE.MeshMatcapMaterial()
 // material.matcap = matcapTexture
 
 // const material = new THREE.MeshDepthMaterial()
@@ -69,26 +81,68 @@ const gui = new lil.GUI();
 // material.gradientMap = gradientTexture
 
 const material = new THREE.MeshStandardMaterial();
-material.metalness = 0.45;
-material.roughness = 0.45;
+material.metalness = 0.7;
+material.roughness = 0.2;
+// material.map = doorColorTexture;
+// material.aoMap = doorAmbientOcclusionTexture;
+// material.aoMapIntensity = 1;
+// material.displacementMap = doorHeightTexture;
+// material.displacementScale = 0.05;
+// material.metalnessMap = doorMetalnessTexture;
+// material.roughnessMap = doorRoughnessTexture;
+// material.normalMap = doorNormalTexture;
+// material.normalScale.set(0.5, 0.5);
+// material.side = THREE.DoubleSide;
+// Viene junta
+material.alphaMap = doorAlphaTexture;
+// material.transparent = true;
+material.envMap = environmentMapTexture;
+
 gui.add(material, "metalness").name("Metalness").min(0).max(1).step(0.0001);
 gui.add(material, "roughness").name("Roughness").min(0).max(1).step(0.0001);
+gui
+  .add(material, "aoMapIntensity")
+  .name("AoMapIntensity")
+  .min(0)
+  .max(10)
+  .step(0.0001);
 
+gui.add(material, "wireframe").name("Wireframe");
+gui
+  .add(material, "displacementScale")
+  .name("displacementScale")
+  .min(0)
+  .max(10)
+  .step(0.0001);
 
-const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 16, 16), material);
+const sphere = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), material);
 
 sphere.position.x = -1.5;
 
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(), material);
-
-const torus = new THREE.Mesh(
-  new THREE.TorusGeometry(0.3, 0.2, 16, 32),
-  material
+sphere.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(sphere.geometry.attributes.uv.array, 2)
 );
 
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 100, 100), material);
+
+plane.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(plane.geometry.attributes.uv.array, 2)
+);
+
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(0.3, 0.2, 64, 128),
+  material
+);
+torus.geometry.setAttribute(
+  "uv2",
+  new THREE.BufferAttribute(torus.geometry.attributes.uv.array, 2)
+);
 torus.position.x = 1.5;
 
 scene.add(sphere, plane, torus);
+// scene.add(plane);
 
 /**
  * Lights
