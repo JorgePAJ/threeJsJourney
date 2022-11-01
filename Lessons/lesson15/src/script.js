@@ -24,18 +24,51 @@ ambientLight.intensity = 0.5;
 const firstLight = gui.addFolder("First Light");
 firstLight.add(ambientLight, "intensity").min(0).max(1).step(0.001);
 firstLight.addColor(ambientLight, "color");
-scene.add(ambientLight);
-
+// scene.add(ambientLight);
 
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.3);
 const secondLight = gui.addFolder("Second Light");
 secondLight.add(directionalLight, "intensity").min(0).max(1).step(0.001);
 secondLight.addColor(directionalLight, "color");
 directionalLight.position.set(1, 0.25, 0);
+// scene.add(directionalLight);
 
 
-scene.add(directionalLight);
+const hemisphereLight = new THREE.HemisphereLight(0xe3bfd4, 0x0000ff, 0.3);
+const thirdLight = gui.addFolder("Third Light");
+thirdLight.add(hemisphereLight, "intensity").min(0).max(1).step(0.001);
+thirdLight.addColor(hemisphereLight, "color");
+thirdLight.addColor(hemisphereLight, "groundColor");
+// scene.add(hemisphereLight);
 
+const pointLight = new THREE.PointLight(0xff9000, 0.5 , 10, 2);
+const fourthLight = gui.addFolder("Fourth Light");
+fourthLight.add(pointLight, "intensity").min(0).max(1).step(0.001);
+fourthLight.addColor(pointLight, "color");
+pointLight.position.set(1, -0.5, 1);
+// scene.add(pointLight);
+
+const rectAreaLight = new THREE.RectAreaLight(0x4e00ff, 5, 1, 1);
+const fifthLight = gui.addFolder("Fifth Light");
+fifthLight.add(rectAreaLight, "intensity").min(0).max(10).step(0.001);
+fifthLight.addColor(rectAreaLight, "color");
+rectAreaLight.position.set(-1.5, 1, 1.5);
+rectAreaLight.lookAt(new THREE.Vector3());
+// scene.add(rectAreaLight);
+
+const spotLight = new THREE.SpotLight(0xffffff, 1, 10, Math.PI * 0.1, 0.25, 1);
+spotLight.position.set(0, 2, 3);
+const sixthLight = gui.addFolder("Sixth Light");
+sixthLight.add(spotLight, "intensity").min(0).max(1).step(0.001);
+sixthLight.addColor(spotLight, "color");
+scene.add(spotLight.target);
+spotLight.target.position.x = 0;
+spotLight.target.position.y = 0;
+sixthLight.add(spotLight.target.position, "x").min(-5).max(5).step(0.001);
+sixthLight.add(spotLight.target.position, "y").min(-5).max(5).step(0.001);
+const lightHelper = new THREE.PointLightHelper(pointLight, 0.2);
+scene.add(lightHelper);
+scene.add(spotLight);
 /**
  * Objects
  */
@@ -139,3 +172,5 @@ const tick = () => {
 };
 
 tick();
+
+
