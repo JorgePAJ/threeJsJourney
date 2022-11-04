@@ -97,6 +97,7 @@ window.addEventListener('resize', () =>
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.shadowMap.enabled = true
+    render.shadowMap.type = THREE.PCFSoftShadowMap
 })
 
 /**
