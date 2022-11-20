@@ -47,18 +47,24 @@ const mesh3 = new THREE.Mesh(
   new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
   material
 );
+const mesh4 = new THREE.Mesh(new THREE.BoxGeometry(2, 2, 2), material);
+const mesh5 = new THREE.Mesh(new THREE.TorusGeometry(1, 0.4, 16, 60), material);
 
 mesh1.position.y = -objectsDistance * 0;
 mesh2.position.y = -objectsDistance * 1;
 mesh3.position.y = -objectsDistance * 2;
+mesh4.position.y = -objectsDistance * 3;
+mesh5.position.y = -objectsDistance * 4;
 
 mesh1.position.x = 2;
 mesh2.position.x = -2;
 mesh3.position.x = 2;
+mesh4.position.x = -2;
+mesh5.position.x = 0;
 
-scene.add(mesh1, mesh2, mesh3);
+scene.add(mesh1, mesh2, mesh3, mesh4, mesh5);
 
-const sectionMeshes = [mesh1, mesh2, mesh3];
+const sectionMeshes = [mesh1, mesh2, mesh3, mesh4, mesh5];
 
 // Particles
 
@@ -159,8 +165,13 @@ window.addEventListener("scroll", () => {
       ease: "power2.inOut",
       x: "+=6",
       y: "+=3",
-      z: "+=1.5"
+      z: "+=1.5",
     });
+  }
+  if (currentSection === sectionMeshes.length - 1) {
+    gui.show();
+  } else {
+    gui.hide();
   }
 });
 
