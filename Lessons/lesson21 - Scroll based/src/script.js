@@ -159,6 +159,7 @@ window.addEventListener("scroll", () => {
       ease: "power2.inOut",
       x: "+=6",
       y: "+=3",
+      z: "+=1.5"
     });
   }
 });
