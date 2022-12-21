@@ -2,7 +2,7 @@ import "./style.css";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
-import CANNON from "cannon";
+import * as CANNON from "cannon-es";
 
 /**
  * Debug
@@ -23,9 +23,22 @@ debugObject.createBox = () => {
     z: (Math.random() - 0.5) * 3,
   });
 };
+debugObject.reset = () => {
+  for (const object of objectsToUpdate) {
+    // Remove the body
+    object.body.removeEventListener("collide", playHitSound);
+    world.removeBody(object.body);
 
+    // Remove the mesh
+    scene.remove(object.mesh);
+
+    // Remove the object from the array
+    objectsToUpdate.splice(0, objectsToUpdate.length);
+  }
+};
 gui.add(debugObject, "createSphere").name("Create Sphere ⚪️");
 gui.add(debugObject, "createBox").name("Create Box 📦");
+gui.add(debugObject, "reset").name("Reset 🔄");
 
 /**
  * Base
