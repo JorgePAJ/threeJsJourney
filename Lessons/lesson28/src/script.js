@@ -1,13 +1,15 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "lil-gui";
-
+import testVertexShader from "./shaders/test/vertex.glsl";
+import testFragmentShader from "./shaders/test/fragment.glsl";
 /**
  * Base
  */
 // Debug
 const gui = new dat.GUI();
 
+//
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 
@@ -18,18 +20,42 @@ const scene = new THREE.Scene();
  * Textures
  */
 const textureLoader = new THREE.TextureLoader();
+const flagTexture = textureLoader.load("/textures/Bigender_Flag.png");
 
 /**
  * Test mesh
  */
+
 // Geometry
 const geometry = new THREE.PlaneGeometry(1, 1, 32, 32);
+const count = geometry.attributes.position.count;
+const randoms = new Float32Array(count);
+
+for (let i = 0; i < count; i++) {
+  randoms[i] = Math.random();
+}
+
+geometry.setAttribute("aRandom", new THREE.BufferAttribute(randoms, 1));
 
 // Material
-const material = new THREE.MeshBasicMaterial();
+const material = new THREE.ShaderMaterial({
+  vertexShader: testVertexShader,
+  fragmentShader: testFragmentShader,
+  side: THREE.DoubleSide,
+  uniforms: {
+    uFrequency: { value: new THREE.Vector2(10, 5) },
+    uTime: { value: 0 },
+    uColor: { value: new THREE.Color("white") },
+    uTexture: { value: flagTexture },
+  },
+});
+
+gui.add(material.uniforms.uFrequency.value, "x").min(0).max(20).step(0.01);
+gui.add(material.uniforms.uFrequency.value, "y").min(0).max(20).step(0.01);
 
 // Mesh
 const mesh = new THREE.Mesh(geometry, material);
+mesh.scale.y = 2 / 3;
 scene.add(mesh);
 
 /**
@@ -87,6 +113,9 @@ const clock = new THREE.Clock();
 
 const tick = () => {
   const elapsedTime = clock.getElapsedTime();
+
+  // Update material
+  material.uniforms.uTime.value = elapsedTime;
 
   // Update controls
   controls.update();
