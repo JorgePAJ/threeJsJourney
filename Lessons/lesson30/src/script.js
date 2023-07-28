@@ -12,37 +12,52 @@ THREE.ColorManagement.enabled = false;
 // Debug
 const gui = new dat.GUI({ width: 340 });
 const debugObject = {};
-debugObject.depthColor = "#0000FF";
-debugObject.surfaceColor = "#8888FF";
+debugObject.depthColor = "#186691";
+debugObject.surfaceColor = "#9bd8ff";
 
 // Canvas
 const canvas = document.querySelector("canvas.webgl");
 
-// Scene
 const scene = new THREE.Scene();
+scene.fog = new THREE.Fog("#64748b", 0, 6);
 
 /**
  * Water
  */
-// Geometry
-const waterGeometry = new THREE.PlaneGeometry(2, 2, 128, 128);
 
+// Geometr
+
+const waterGeometry = new THREE.PlaneGeometry(2, 2, 512, 512);
 // Material
 const waterMaterial = new THREE.ShaderMaterial({
   vertexShader: waterVertexShader,
   fragmentShader: waterFragmentShader,
-  uniforms: {
-    uTime: { value: 0.0 },
-    uBigWavesElevation: { value: 0.2 },
-    uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
-    uBigWavesSpeed: { value: 0.75 },
+  fog: true,
+  uniforms: THREE.UniformsUtils.merge([
+    {
+      uTime: { value: 0.0 },
+      uBigWavesElevation: { value: 0.2 },
+      uBigWavesFrequency: { value: new THREE.Vector2(4, 1.5) },
+      uBigWavesSpeed: { value: 0.75 },
 
-    // Colors
-    uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
-    uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
-    uColorOffset: { value: 0.25 },
-    uColorMultiplier: { value: 2.0 },
-  },
+      // Colors
+      uDepthColor: { value: new THREE.Color(debugObject.depthColor) },
+      uSurfaceColor: { value: new THREE.Color(debugObject.surfaceColor) },
+      uColorOffset: { value: 0.08 },
+      uColorMultiplier: { value: 5.0 },
+
+      // Small Waves
+      uSmallWavesElevation: { value: 0.15 },
+      uSmallWavesFrequency: { value: 3.0 },
+      uSmallWavesSpeed: { value: 0.2 },
+      uSmallWavesIterations: { value: 4.0 },
+
+      // Fog
+      fogColor: { type: "c", value: scene.fog.color },
+      fogNear: { type: "f", value: scene.fog.near },
+      fogFar: { type: "f", value: scene.fog.far },
+    },
+  ]),
 });
 
 gui
@@ -101,9 +116,35 @@ gui
   .step(0.001)
   .name("Big Waves Frequency Y");
 
+gui
+  .add(waterMaterial.uniforms.uSmallWavesElevation, "value")
+  .min(0)
+  .max(1)
+  .step(0.001)
+  .name("Small Waves Elevation");
+gui
+  .add(waterMaterial.uniforms.uSmallWavesFrequency, "value")
+  .min(0)
+  .max(30)
+  .step(0.001)
+  .name("Small Waves Frequency");
+gui
+  .add(waterMaterial.uniforms.uSmallWavesSpeed, "value")
+  .min(0)
+  .max(4)
+  .step(0.001)
+  .name("Small Waves Speed");
+gui
+  .add(waterMaterial.uniforms.uSmallWavesIterations, "value")
+  .min(0)
+  .max(8)
+  .step(1)
+  .name("Small Waves Iterations");
+
 // Mesh
 const water = new THREE.Mesh(waterGeometry, waterMaterial);
 water.rotation.x = -Math.PI * 0.5;
+water.scale.set(4, 4, 4);
 scene.add(water);
 
 /**
@@ -126,6 +167,7 @@ window.addEventListener("resize", () => {
   // Update renderer
   renderer.setSize(sizes.width, sizes.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor("#64748b");
 });
 
 /**
@@ -153,7 +195,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
+renderer.setClearColor("#64748b");
 /**
  * Animate
  */
