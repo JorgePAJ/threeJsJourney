@@ -1,9 +1,16 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-
+import Stats from 'stats.js'
 /**
  * Base
  */
+
+// Stats
+var stats = new Stats();
+stats.showPanel(1);
+document.body.appendChild(stats.dom);
+
+
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -127,6 +134,7 @@ const tick = () =>
     // Update test mesh
     torusKnot.rotation.y = elapsedTime * 0.1
 
+    stats.begin();
     // Update controls
     controls.update()
 
@@ -135,6 +143,7 @@ const tick = () =>
 
     // Call tick again on the next frame
     window.requestAnimationFrame(tick)
+    stats.end();
 }
 
 tick()
