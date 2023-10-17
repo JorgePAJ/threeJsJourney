@@ -34,6 +34,9 @@ export default function Experience() {
         onClick={(e) => {
           e.stopPropagation();
         }}
+	onPointerOver={(e)=>{
+e.stopPropagation();
+}}
       >
         <sphereGeometry />
         <meshStandardMaterial color="orange" />
