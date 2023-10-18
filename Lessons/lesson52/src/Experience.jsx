@@ -12,7 +12,7 @@ function Macbook(props) {
     "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
   );
   return (
-    <primitive object={scene} {...props} position-y={-1.2} rotation-y={-0.67}>
+    <primitive object={scene} {...props} position-y={-1.2} rotation-y={-0.67} >
       <Html
         transform
         wrapperClass="htmlScreen"
